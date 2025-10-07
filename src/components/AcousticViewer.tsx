@@ -615,25 +615,25 @@ useEffect(() => {
         {/* Main room container */}
         <div className="relative flex items-center gap-0 flex-1 min-h-0">
           
-          {/* Room label - Desktop only positioning - MOVED HIGHER TO SHOW CEILING */}
-<div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 z-50 pointer-events-none" style={{ top: '-120px' }}>
+          {/* Room label - Desktop only positioning - COMPACT AND MINIMAL OVERLAP */}
+<div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 z-50 pointer-events-none" style={{ top: '-65px' }}>
   <div className="relative">
-    {/* Decorative sign board background */}
-    <div className="relative bg-gradient-to-br from-[#5a89b8] via-[#6a99c8] to-[#7aa9d8] px-12 py-6 rounded-2xl shadow-2xl border-4 border-white/20">
+    {/* Decorative sign board background - COMPACT */}
+    <div className="relative bg-gradient-to-br from-[#5a89b8] via-[#6a99c8] to-[#7aa9d8] px-6 py-2.5 rounded-lg shadow-xl border-2 border-white/20">
       {/* Metallic frame effect */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
       
-      {/* Corner decorations */}
-      <div className="absolute -top-2 -left-2 w-8 h-8 bg-[#577bac] rounded-full border-4 border-white/30 shadow-lg" />
-      <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#577bac] rounded-full border-4 border-white/30 shadow-lg" />
-      <div className="absolute -bottom-2 -left-2 w-8 h-8 bg-[#577bac] rounded-full border-4 border-white/30 shadow-lg" />
-      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#577bac] rounded-full border-4 border-white/30 shadow-lg" />
+      {/* Corner decorations - SMALLER */}
+      <div className="absolute -top-1 -left-1 w-4 h-4 bg-[#577bac] rounded-full border-2 border-white/30 shadow-md" />
+      <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#577bac] rounded-full border-2 border-white/30 shadow-md" />
+      <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-[#577bac] rounded-full border-2 border-white/30 shadow-md" />
+      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#577bac] rounded-full border-2 border-white/30 shadow-md" />
       
       {/* Glow effect */}
-      <div className="absolute inset-0 rounded-2xl shadow-[0_0_30px_rgba(64,125,213,0.5)]" />
+      <div className="absolute inset-0 rounded-lg shadow-[0_0_20px_rgba(64,125,213,0.3)]" />
       
-      {/* Room name */}
-      <div className="relative text-[3rem] bebas-neue text-white tracking-[0.15em] whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+      {/* Room name - COMPACT TEXT */}
+      <div className="relative text-[1.5rem] bebas-neue text-white tracking-[0.15em] whitespace-nowrap drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]">
         <TextEffect 
           per='char' 
           preset='blur'
@@ -645,9 +645,9 @@ useEffect(() => {
       </div>
     </div>
     
-    {/* Hanging chain effect */}
-    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-1 h-8 bg-gradient-to-b from-white/40 to-white/10 rounded-full" />
-    <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-white/30 rounded-full shadow-lg" />
+    {/* Hanging chain effect - SHORTER */}
+    <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 w-0.5 h-6 bg-gradient-to-b from-white/40 to-white/10 rounded-full" />
+    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 w-2.5 h-2.5 bg-white/30 rounded-full shadow-md" />
   </div>
 </div>
           {/* Mobile: Combined viewer and controls */}
