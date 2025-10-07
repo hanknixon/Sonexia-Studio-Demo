@@ -130,6 +130,35 @@ const getAllTransitionVideos = (): string[] => {
     });
   }, []);
 
+  useEffect(() => {
+  // Preload all audio files
+  const audioFiles = [
+    './audio/Office(echo+highdB).mp3',
+    './audio/Office(echo+lowdB).mp3',
+    './audio/Office(no-echo+highdB).mp3',
+    './audio/Office(no-echo+lowdB).mp3',
+    './audio/Classroom(echo+highdB).mp3',
+    './audio/Classroom(echo+lowdB).mp3',
+    './audio/Classroom(no-echo+highdB).mp3',
+    './audio/Classroom(no-echo+lowdB).mp3',
+    './audio/Hospital(echo+highdB).mp3',
+    './audio/Hospital(echo+lowdB).mp3',
+    './audio/Hospital(no-echo+highdB).mp3',
+    './audio/Hospital(no-echo+lowdB).mp3',
+    './audio/Cinema(echo+highdB).mp3',
+    './audio/Cinema(echo+lowdB).mp3',
+    './audio/Cinema(no-echo+highdB).mp3',
+    './audio/Cinema(no-echo+lowdB).mp3'
+  ];
+
+  audioFiles.forEach(src => {
+    const audio = new Audio();
+    audio.preload = 'auto';
+    audio.src = src;
+    audio.load();
+  });
+}, []);
+
   // Preload next video when room changes
   // Batch preload all transition videos
 useEffect(() => {
