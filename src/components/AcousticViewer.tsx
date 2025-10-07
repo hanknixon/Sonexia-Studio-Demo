@@ -533,69 +533,90 @@ useEffect(() => {
       <div className="fixed inset-0 bg-black/10" />
       
       <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
-          
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-          }
-          
-          body, html, #root {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            background: #1a3a4a;
-          }
-          
-          .bebas-neue {
-            font-family: "Bebas Neue", sans-serif;
-          }
-          
-          @keyframes fade-in {
-            from {
-              opacity: 0;
-              transform: translateY(-50%) scale(0.95);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(-50%) scale(1);
-            }
-          }
-          
-          .animate-fade-in {
-            animation: fade-in 0.2s ease-out forwards;
-          }
+  {`
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body, html, #root {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      background: #1a3a4a;
+    }
+    
+    .bebas-neue {
+      font-family: "Bebas Neue", sans-serif;
+    }
+    
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(-50%) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
+      }
+    }
+    
+    .animate-fade-in {
+      animation: fade-in 0.2s ease-out forwards;
+    }
 
-          /* Lock viewport to prevent zoom affecting layout */
-          @media screen and (min-width: 768px) {
-            .main-container {
-              width: 90vw;
-              max-width: 1400px;
-              height: 85vh;
-            }
-          }
+    /* Desktop: Fixed 1400x800 dimensions - perfect for 100% zoom */
+    @media screen and (min-width: 768px) {
+      .main-container {
+        width: 1400px !important;
+        height: 800px !important;
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        transform-origin: center center !important;
+      }
+      
+      .room-viewer-desktop {
+        width: 1400px !important;
+        height: 600px !important;
+        position: relative !important;
+      }
+      
+      .desktop-controls {
+        height: 200px !important;
+      }
+    }
 
-          @media screen and (max-width: 767px) {
-            .room-viewer-mobile {
-              aspect-ratio: 16 / 9;
-              width: 100%;
-              max-height: 50vh;
-            }
-          }
-        `}
-      </style>
+    /* Mobile: Keep responsive */
+    @media screen and (max-width: 767px) {
+      .room-viewer-mobile {
+        aspect-ratio: 16 / 9;
+        width: 100%;
+        position: relative;
+      }
+    }
+    
+    /* Prevent images from scaling */
+    img {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+  `}
+</style>
       
       <div className="main-container w-full h-full relative z-10 flex flex-col p-4 md:p-8 mx-auto">
 
         {/* Main room container */}
         <div className="relative flex items-center gap-0 flex-1 min-h-0">
           
-          {/* Room label - Desktop only positioning */}
-<div className="hidden md:block absolute -top-8 sm:-top-10 md:-top-24 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none">
+          {/* Room label - Desktop only positioning - MOVED HIGHER TO SHOW CEILING */}
+<div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 z-50 pointer-events-none" style={{ top: '-120px' }}>
   <div className="relative">
     {/* Decorative sign board background */}
     <div className="relative bg-gradient-to-br from-[#5a89b8] via-[#6a99c8] to-[#7aa9d8] px-12 py-6 rounded-2xl shadow-2xl border-4 border-white/20">
@@ -612,7 +633,7 @@ useEffect(() => {
       <div className="absolute inset-0 rounded-2xl shadow-[0_0_30px_rgba(64,125,213,0.5)]" />
       
       {/* Room name */}
-      <div className="relative text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] bebas-neue text-white tracking-[0.15em] whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+      <div className="relative text-[3rem] bebas-neue text-white tracking-[0.15em] whitespace-nowrap drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
         <TextEffect 
           per='char' 
           preset='blur'
@@ -858,7 +879,7 @@ useEffect(() => {
           </div>
 
           {/* Desktop: Room viewer */}
-          <div className="hidden md:block room-viewer-mobile relative w-full h-full bg-[#407dd5] rounded-t-lg md:rounded-t-2xl overflow-hidden shadow-2xl">
+          <div className="hidden md:block room-viewer-desktop relative bg-[#407dd5] rounded-t-lg md:rounded-t-2xl overflow-hidden shadow-2xl">
             
             {/* Video transition overlay - DESKTOP */}
             <video
@@ -886,7 +907,7 @@ useEffect(() => {
             </div>
             
             {/* Close button */}
-            <button className="absolute top-2 right-2 md:top-4 md:right-4 bg-gray-800/90 hover:bg-gray-900 text-white px-3 py-1.5 md:px-4 md:py-2 rounded text-xs md:text-sm transition-colors duration-200 flex items-center gap-2 z-40">
+            <button className="absolute bg-gray-800/90 hover:bg-gray-900 text-white px-4 py-2 rounded text-sm transition-colors duration-200 flex items-center gap-2 z-40" style={{ top: '16px', right: '16px' }}>
               <span className="bebas-neue tracking-wider">CLOSE</span>
               <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -895,177 +916,177 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* Desktop: Bottom control panel */}
-        <div className="hidden md:block bg-white/95 backdrop-blur-sm rounded-b-lg md:rounded-b-2xl overflow-hidden md:border-t-0 md:border-x md:border-b border-gray-200/50 md:shadow-2xl">
-          
-          {/* Desktop Layout - 5 columns */}
-          <div className="grid grid-cols-5 divide-x divide-gray-200/50">
-            
-            {/* Left Room Navigation */}
-            <div className="p-4 lg:p-6">
-              <div className="text-xs bebas-neue tracking-widest text-gray-400 mb-3 lg:mb-4">PREVIOUS ROOM</div>
-              <button
-                onClick={switchToPrevRoom}
-                disabled={isTransitioning}
-                className="group relative w-full px-3 py-2 lg:px-4 lg:py-3 rounded-xl bg-gray-100 text-gray-600 hover:bg-[#407dd5] hover:text-white transition-all duration-300 disabled:opacity-50 overflow-hidden"
-              >
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                
-                <div className="flex items-center gap-2 lg:gap-3 relative z-10">
-                  <svg className="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                  <div className="flex-1 overflow-hidden">
-                    <div className="relative h-5">
-                      <span className="bebas-neue text-xs lg:text-sm tracking-wider absolute left-0 top-0 group-hover:opacity-0 group-hover:-translate-y-full transition-all duration-300">
-                        {rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1] === 'cinema' 
-                          ? 'CINEMA HALL' 
-                          : rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].toUpperCase()}
-                      </span>
-                      <span className="bebas-neue text-xs lg:text-sm tracking-wider absolute left-0 top-full opacity-0 group-hover:opacity-100 group-hover:top-0 transition-all duration-300">
-                        GO TO {rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1] === 'cinema' 
-                          ? 'CINEMA HALL' 
-                          : rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </button>
-            </div>
-            
-            {/* Absorption Controls */}
-            <div className="p-4 lg:p-6">
-              <div className="text-xs bebas-neue tracking-widest text-gray-400 mb-3 lg:mb-4">ACOUSTIC PANELS</div>
-              <div className="flex flex-col gap-2 lg:gap-3">
-                <button
-                  onClick={() => setWallsEnabled(!wallsEnabled)}
-                  className={`group relative px-3 py-2 lg:px-4 lg:py-3 rounded-xl transition-all duration-300 overflow-hidden ${
-                    wallsEnabled
-                      ? 'bg-[#407dd5] text-white shadow-lg shadow-[#407dd5]/30'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                  
-                  <div className="flex items-center justify-between relative z-10">
-                    <span className="bebas-neue text-xs lg:text-sm tracking-wider">WALL PANELS</span>
-                    <div className={`transition-all ${wallsEnabled ? 'text-white' : 'text-gray-400'}`}>
-                      {wallsEnabled ? (
-                        <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      ) : (
-                        <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      )}
-                    </div>
-                  </div>
-                </button>
-                
-                <button
-                  onClick={() => setCeilingEnabled(!ceilingEnabled)}
-                  className={`group relative px-3 py-2 lg:px-4 lg:py-3 rounded-xl transition-all duration-300 overflow-hidden ${
-                    ceilingEnabled
-                      ? 'bg-[#407dd5] text-white shadow-lg shadow-[#407dd5]/30'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                  
-                  <div className="flex items-center justify-between relative z-10">
-                    <span className="bebas-neue text-xs lg:text-sm tracking-wider">CEILING PANELS</span>
-                    <div className={`transition-all ${ceilingEnabled ? 'text-white' : 'text-gray-400'}`}>
-                      {ceilingEnabled ? (
-                        <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      ) : (
-                        <svg className="w-4 h-4 lg:w-5 lg:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      )}
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            {/* Sound Visualization */}
-            <div className="p-4 lg:p-6 flex flex-col justify-center">
-              <div className="text-xs bebas-neue tracking-widest text-gray-400 mb-3 lg:mb-4 text-center">AUDIO PREVIEW</div>
-              <div className="bg-gradient-to-r from-gray-100 to-gray-50 px-4 py-3 lg:px-6 lg:py-4 rounded-xl border border-gray-200/50">
-                <div className="flex items-center justify-center gap-1">
-                  {[...Array(20)].map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-1 bg-[#407dd5] rounded-full animate-pulse"
-                      style={{
-                        height: `${Math.random() * 20 + 10}px`,
-                        animationDelay: `${i * 0.05}s`,
-                        opacity: 0.3 + Math.random() * 0.7
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Sound Controls */}
-            <div className="p-4 lg:p-6">
-              <div className="text-xs bebas-neue tracking-widest text-gray-400 mb-3 lg:mb-4">AUDIO SAMPLE</div>
-              <button 
-                onClick={() => setAmbientEnabled(!ambientEnabled)}
-                className={`group relative w-full px-3 py-2 lg:px-4 lg:py-3 rounded-xl transition-all duration-300 overflow-hidden ${
-                  ambientEnabled
-                    ? 'bg-gradient-to-r from-[#407dd5] to-[#2d5fa8] text-white shadow-lg shadow-[#407dd5]/30'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                
-                <div className="flex items-center justify-center gap-2 relative z-10">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                  </svg>
-                  <span className="bebas-neue text-xs lg:text-sm tracking-wider">SOUNDSCAPE</span>
-                </div>
-              </button>
-            </div>
-
-            {/* Right Room Navigation */}
-            <div className="p-4 lg:p-6">
-              <div className="text-xs bebas-neue tracking-widest text-gray-400 mb-3 lg:mb-4">NEXT ROOM</div>
-              <button
-                onClick={switchToNextRoom}
-                disabled={isTransitioning}
-                className="group relative w-full px-3 py-2 lg:px-4 lg:py-3 rounded-xl bg-gray-100 text-gray-600 hover:bg-[#407dd5] hover:text-white transition-all duration-300 disabled:opacity-50 overflow-hidden"
-              >
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                
-                <div className="flex items-center gap-2 lg:gap-3 relative z-10">
-                  <div className="flex-1 overflow-hidden">
-                    <div className="relative h-5">
-                      <span className="bebas-neue text-xs lg:text-sm tracking-wider absolute left-0 top-0 group-hover:opacity-0 group-hover:-translate-y-full transition-all duration-300">
-                        {rooms[(currentRoomIndex + 1) % rooms.length] === 'cinema' 
-                          ? 'CINEMA HALL' 
-                          : rooms[(currentRoomIndex + 1) % rooms.length].toUpperCase()}
-                      </span>
-                      <span className="bebas-neue text-xs lg:text-sm tracking-wider absolute left-0 top-full opacity-0 group-hover:opacity-100 group-hover:top-0 transition-all duration-300">
-                        GO TO {rooms[(currentRoomIndex + 1) % rooms.length] === 'cinema' 
-                          ? 'CINEMA HALL' 
-                          : rooms[(currentRoomIndex + 1) % rooms.length].toUpperCase()}
-                      </span>
-                    </div>
-                  </div>
-                  <svg className="w-4 h-4 lg:w-5 lg:h-5 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </button>
+        {/* Desktop: Bottom control panel - FIXED FOR VISIBILITY */}
+<div className="hidden md:block desktop-controls bg-white/95 backdrop-blur-sm rounded-b-lg md:rounded-b-2xl md:border-t-0 md:border-x md:border-b border-gray-200/50 md:shadow-2xl overflow-visible">
+  
+  {/* Desktop Layout - 5 columns with proper headings */}
+  <div className="grid grid-cols-5 divide-x divide-gray-200/50 pt-2">
+    
+    {/* Left Room Navigation */}
+    <div className="px-6 py-6 pt-8 flex flex-col">
+      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Previous Room</div>
+      <button
+        onClick={switchToPrevRoom}
+        disabled={isTransitioning}
+        className="group relative w-full px-4 py-3.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-[#407dd5] hover:text-white transition-all duration-300 disabled:opacity-50 overflow-hidden"
+      >
+        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        
+        <div className="flex items-center gap-2.5 relative z-10">
+          <svg className="w-5 h-5 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          <div className="flex-1 overflow-hidden">
+            <div className="relative h-6">
+              <span className="bebas-neue text-sm tracking-wider absolute left-0 top-0 group-hover:opacity-0 group-hover:-translate-y-full transition-all duration-300">
+                {rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1] === 'cinema' 
+                  ? 'Cinema Hall' 
+                  : rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].charAt(0).toUpperCase() + rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].slice(1)}
+              </span>
+              <span className="bebas-neue text-sm tracking-wider absolute left-0 top-full opacity-0 group-hover:opacity-100 group-hover:top-0 transition-all duration-300">
+                Go To {rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1] === 'cinema' 
+                  ? 'Cinema' 
+                  : rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].charAt(0).toUpperCase() + rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].slice(1)}
+              </span>
             </div>
           </div>
         </div>
+      </button>
+    </div>
+    
+    {/* Acoustic Panels */}
+    <div className="px-6 py-6 pt-8 flex flex-col">
+      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Acoustic Panels</div>
+      <div className="flex flex-col gap-3">
+        <button
+          onClick={() => setWallsEnabled(!wallsEnabled)}
+          className={`group relative px-4 py-3.5 rounded-xl transition-all duration-300 overflow-hidden ${
+            wallsEnabled
+              ? 'bg-[#407dd5] text-white shadow-lg shadow-[#407dd5]/30'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+          }`}
+        >
+          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          
+          <div className="flex items-center justify-between relative z-10">
+            <span className="bebas-neue text-sm tracking-wider">Wall Panels</span>
+            <div className={`transition-all ${wallsEnabled ? 'text-white' : 'text-gray-400'}`}>
+              {wallsEnabled ? (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
+            </div>
+          </div>
+        </button>
+        
+        <button
+          onClick={() => setCeilingEnabled(!ceilingEnabled)}
+          className={`group relative px-4 py-3.5 rounded-xl transition-all duration-300 overflow-hidden ${
+            ceilingEnabled
+              ? 'bg-[#407dd5] text-white shadow-lg shadow-[#407dd5]/30'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+          }`}
+        >
+          <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          
+          <div className="flex items-center justify-between relative z-10">
+            <span className="bebas-neue text-sm tracking-wider">Ceiling Panels</span>
+            <div className={`transition-all ${ceilingEnabled ? 'text-white' : 'text-gray-400'}`}>
+              {ceilingEnabled ? (
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              )}
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    {/* Audio Preview */}
+    <div className="px-6 py-6 pt-8 flex flex-col justify-center">
+      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Audio Preview</div>
+      <div className="bg-gradient-to-r from-gray-100 to-gray-50 px-6 py-5 rounded-xl border border-gray-200/50">
+        <div className="flex items-center justify-center gap-1">
+          {[...Array(20)].map((_, i) => (
+            <div
+              key={i}
+              className="w-1 bg-[#407dd5] rounded-full animate-pulse"
+              style={{
+                height: `${Math.random() * 28 + 14}px`,
+                animationDelay: `${i * 0.05}s`,
+                opacity: 0.3 + Math.random() * 0.7
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Audio Sample */}
+    <div className="px-6 py-6 pt-8 flex flex-col">
+      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Audio Sample</div>
+      <button 
+        onClick={() => setAmbientEnabled(!ambientEnabled)}
+        className={`group relative w-full px-4 py-6 rounded-xl transition-all duration-300 overflow-hidden ${
+          ambientEnabled
+            ? 'bg-gradient-to-r from-[#407dd5] to-[#2d5fa8] text-white shadow-lg shadow-[#407dd5]/30'
+            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+        }`}
+      >
+        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        
+        <div className="flex items-center justify-center gap-2.5 relative z-10">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+          </svg>
+          <span className="bebas-neue text-sm tracking-wider">Soundscape</span>
+        </div>
+      </button>
+    </div>
+
+    {/* Right Room Navigation */}
+    <div className="px-6 py-6 pt-8 flex flex-col">
+      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Next Room</div>
+      <button
+        onClick={switchToNextRoom}
+        disabled={isTransitioning}
+        className="group relative w-full px-4 py-3.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-[#407dd5] hover:text-white transition-all duration-300 disabled:opacity-50 overflow-hidden"
+      >
+        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        
+        <div className="flex items-center gap-2.5 relative z-10">
+          <div className="flex-1 overflow-hidden">
+            <div className="relative h-6">
+              <span className="bebas-neue text-sm tracking-wider absolute left-0 top-0 group-hover:opacity-0 group-hover:-translate-y-full transition-all duration-300">
+                {rooms[(currentRoomIndex + 1) % rooms.length] === 'cinema' 
+                  ? 'Cinema Hall' 
+                  : rooms[(currentRoomIndex + 1) % rooms.length].charAt(0).toUpperCase() + rooms[(currentRoomIndex + 1) % rooms.length].slice(1)}
+              </span>
+              <span className="bebas-neue text-sm tracking-wider absolute left-0 top-full opacity-0 group-hover:opacity-100 group-hover:top-0 transition-all duration-300">
+                Go To {rooms[(currentRoomIndex + 1) % rooms.length] === 'cinema' 
+                  ? 'Cinema' 
+                  : rooms[(currentRoomIndex + 1) % rooms.length].charAt(0).toUpperCase() + rooms[(currentRoomIndex + 1) % rooms.length].slice(1)}
+              </span>
+            </div>
+          </div>
+          <svg className="w-5 h-5 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
       </div>
     </div>
   );
