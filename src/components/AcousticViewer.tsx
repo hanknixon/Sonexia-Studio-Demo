@@ -46,7 +46,7 @@ const getAllTransitionVideos = (): string[] => {
   const configs = [
     { walls: false, ceiling: false, suffix: '(No Panels)' },
     { walls: true, ceiling: false, suffix: '(No Ceiling)' },  // Capital C
-    { walls: false, ceiling: true, suffix: '(No Wall)' },     // Capital W
+    { walls: false, ceiling: true, suffix: '(No Wall)' },     
     { walls: true, ceiling: true, suffix: '' }
   ];
 
@@ -200,6 +200,8 @@ useEffect(() => {
       walls: wallsEnabled,
       ceiling: ceilingEnabled
     };
+
+    console.log(`🔍 Transition: ${fromRoom} → ${toRoom}, walls: ${config.walls}, ceiling: ${config.ceiling}`);
 
     // OFFICE TO CLASSROOM (4 videos)
     if (fromRoom === 'office' && toRoom === 'classroom') {
