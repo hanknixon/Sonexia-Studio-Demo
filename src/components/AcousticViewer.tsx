@@ -531,6 +531,68 @@ useEffect(() => {
       
       {/* Overlay to darken background slightly */}
       <div className="fixed inset-0 bg-black/10" />
+
+      {/* Desktop: Left Arrow Navigation Button - OUTSIDE */}
+      <button
+        onClick={switchToPrevRoom}
+        disabled={isTransitioning}
+        className="hidden md:block fixed left-32 top-1/2 -translate-y-1/2 z-50 group disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {/* Arrow circle background */}
+        <div className="relative w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm shadow-2xl border-2 border-white/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-[#407dd5] group-hover:shadow-[0_0_30px_rgba(64,125,213,0.5)]">
+          <svg 
+            className="w-8 h-8 text-gray-700 group-hover:text-white transition-all duration-300 group-hover:scale-125" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+          </svg>
+        </div>
+        
+        {/* Tooltip on hover */}
+        <div className="absolute left-20 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
+          <div className="bg-gray-900/95 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-xl">
+            <span className="bebas-neue text-sm tracking-wider">
+              {rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1] === 'cinema' 
+                ? 'CINEMA HALL' 
+                : rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].toUpperCase()}
+            </span>
+          </div>
+          <div className="absolute right-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-gray-900/95" />
+        </div>
+      </button>
+
+      {/* Desktop: Right Arrow Navigation Button - OUTSIDE */}
+      <button
+        onClick={switchToNextRoom}
+        disabled={isTransitioning}
+        className="hidden md:block fixed right-32 top-1/2 -translate-y-1/2 z-50 group disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {/* Arrow circle background */}
+        <div className="relative w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm shadow-2xl border-2 border-white/20 flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:bg-[#407dd5] group-hover:shadow-[0_0_30px_rgba(64,125,213,0.5)]">
+          <svg 
+            className="w-8 h-8 text-gray-700 group-hover:text-white transition-all duration-300 group-hover:scale-125" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+        
+        {/* Tooltip on hover */}
+        <div className="absolute right-20 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap">
+          <div className="bg-gray-900/95 backdrop-blur-sm text-white px-4 py-2 rounded-lg shadow-xl">
+            <span className="bebas-neue text-sm tracking-wider">
+              {rooms[(currentRoomIndex + 1) % rooms.length] === 'cinema' 
+                ? 'CINEMA HALL' 
+                : rooms[(currentRoomIndex + 1) % rooms.length].toUpperCase()}
+            </span>
+          </div>
+          <div className="absolute left-full top-1/2 -translate-y-1/2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-l-8 border-l-gray-900/95" />
+        </div>
+      </button>
       
       <style>
   {`
@@ -640,6 +702,7 @@ useEffect(() => {
     </div>
   </div>
 </div>
+
           {/* Mobile: Combined viewer and controls */}
 <div className="md:hidden w-full flex flex-col">
   {/* Mobile Room Title - Styled Sign Board */}
@@ -823,25 +886,26 @@ useEffect(() => {
                   </div>
                 </div>
 
-                {/* Audio Preview */}
-                <div>
-                  <div className="text-[0.65rem] bebas-neue tracking-widest text-gray-400 mb-2 text-center">AUDIO PREVIEW</div>
-                  <div className="bg-gradient-to-r from-gray-100 to-gray-50 px-4 py-3 rounded-xl border border-gray-200/50">
-                    <div className="flex items-center justify-center gap-0.5">
-                      {[...Array(20)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="w-1 bg-[#407dd5] rounded-full animate-pulse"
-                          style={{
-                            height: `${Math.random() * 16 + 8}px`,
-                            animationDelay: `${i * 0.05}s`,
-                            opacity: 0.3 + Math.random() * 0.7
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                {/* Mobile Audio Preview */}
+<div>
+  <div className="text-[0.65rem] bebas-neue tracking-widest text-gray-400 mb-2 text-center">AUDIO PREVIEW</div>
+  <div className="bg-gradient-to-r from-gray-100 to-gray-50 px-4 py-3 rounded-xl border border-gray-200/50">
+    <div className="flex items-end justify-center gap-0.5 h-6">
+      {[...Array(20)].map((_, i) => (
+        <div
+          key={i}
+          className={`w-1 bg-[#407dd5] rounded-full ${ambientEnabled ? 'animate-pulse' : ''}`}
+          style={{
+            height: ambientEnabled ? `${Math.random() * 16 + 8}px` : '8px',
+            animationDelay: ambientEnabled ? `${i * 0.05}s` : '0s',
+            opacity: ambientEnabled ? 0.3 + Math.random() * 0.7 : 0.2
+          }}
+        />
+      ))}
+    </div>
+  </div>
+</div>
+
 
                 {/* Audio Sample */}
                 <div>
@@ -907,14 +971,14 @@ useEffect(() => {
         </div>
 
         {/* Desktop: Bottom control panel - FIXED FOR VISIBILITY */}
-<div className="hidden md:block desktop-controls bg-white/95 backdrop-blur-sm rounded-b-lg md:rounded-b-2xl md:border-t-0 md:border-x md:border-b border-gray-200/50 md:shadow-2xl overflow-visible">
+<div className="hidden md:block desktop-controls bg-white/95 backdrop-blur-sm rounded-b-lg md:rounded-b-2xl md:border-t-0 md:border-x md:border-b border-gray-200/50 md:shadow-2xl overflow-hidden">
   
-  {/* Desktop Layout - 5 columns with proper headings */}
-  <div className="grid grid-cols-5 divide-x divide-gray-200/50 pt-2">
+  {/* Desktop Layout - 5 columns with subtle gaps instead of dividers */}
+  <div className="grid grid-cols-5 gap-px bg-gray-200/30 pt-2">
     
     {/* Left Room Navigation */}
-    <div className="px-6 py-6 pt-8 flex flex-col">
-      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Previous Room</div>
+    <div className="px-6 py-6 pt-8 flex flex-col bg-white/95">
+      <div className="text-[0.85rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Previous Room</div>
       <button
         onClick={switchToPrevRoom}
         disabled={isTransitioning}
@@ -923,17 +987,17 @@ useEffect(() => {
         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         
         <div className="flex items-center gap-2.5 relative z-10">
-          <svg className="w-5 h-5 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           <div className="flex-1 overflow-hidden">
-            <div className="relative h-6">
-              <span className="bebas-neue text-sm tracking-wider absolute left-0 top-0 group-hover:opacity-0 group-hover:-translate-y-full transition-all duration-300">
+            <div className="relative h-7">
+              <span className="bebas-neue text-base tracking-wider absolute left-0 top-0 group-hover:opacity-0 group-hover:-translate-y-full transition-all duration-300">
                 {rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1] === 'cinema' 
                   ? 'Cinema Hall' 
                   : rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].charAt(0).toUpperCase() + rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].slice(1)}
               </span>
-              <span className="bebas-neue text-sm tracking-wider absolute left-0 top-full opacity-0 group-hover:opacity-100 group-hover:top-0 transition-all duration-300">
+              <span className="bebas-neue text-base tracking-wider absolute left-0 top-full opacity-0 group-hover:opacity-100 group-hover:top-0 transition-all duration-300">
                 Go To {rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1] === 'cinema' 
                   ? 'Cinema' 
                   : rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].charAt(0).toUpperCase() + rooms[currentRoomIndex === 0 ? rooms.length - 1 : currentRoomIndex - 1].slice(1)}
@@ -945,8 +1009,8 @@ useEffect(() => {
     </div>
     
     {/* Acoustic Panels */}
-    <div className="px-6 py-6 pt-8 flex flex-col">
-      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Acoustic Panels</div>
+    <div className="px-6 py-6 pt-8 flex flex-col bg-white/95">
+      <div className="text-[0.85rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Acoustic Panels</div>
       <div className="flex flex-col gap-3">
         <button
           onClick={() => setWallsEnabled(!wallsEnabled)}
@@ -959,14 +1023,14 @@ useEffect(() => {
           <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
           
           <div className="flex items-center justify-between relative z-10">
-            <span className="bebas-neue text-sm tracking-wider">Wall Panels</span>
+            <span className="bebas-neue text-base tracking-wider">Wall Panels</span>
             <div className={`transition-all ${wallsEnabled ? 'text-white' : 'text-gray-400'}`}>
               {wallsEnabled ? (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               )}
@@ -985,14 +1049,14 @@ useEffect(() => {
           <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
           
           <div className="flex items-center justify-between relative z-10">
-            <span className="bebas-neue text-sm tracking-wider">Ceiling Panels</span>
+            <span className="bebas-neue text-base tracking-wider">Ceiling Panels</span>
             <div className={`transition-all ${ceilingEnabled ? 'text-white' : 'text-gray-400'}`}>
               {ceilingEnabled ? (
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               )}
@@ -1002,29 +1066,29 @@ useEffect(() => {
       </div>
     </div>
 
-    {/* Audio Preview */}
-    <div className="px-6 py-6 pt-8 flex flex-col justify-center">
-      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Audio Preview</div>
-      <div className="bg-gradient-to-r from-gray-100 to-gray-50 px-6 py-5 rounded-xl border border-gray-200/50">
-        <div className="flex items-center justify-center gap-1">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="w-1 bg-[#407dd5] rounded-full animate-pulse"
-              style={{
-                height: `${Math.random() * 28 + 14}px`,
-                animationDelay: `${i * 0.05}s`,
-                opacity: 0.3 + Math.random() * 0.7
-              }}
-            />
-          ))}
-        </div>
-      </div>
+    {/* Desktop Audio Preview */}
+<div className="px-6 py-6 pt-8 flex flex-col justify-center bg-white/95">
+  <div className="text-[0.85rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Audio Preview</div>
+  <div className="bg-gradient-to-r from-gray-100 to-gray-50 px-6 py-5 rounded-xl border border-gray-200/50">
+    <div className="flex items-end justify-center gap-1 h-10">
+      {[...Array(20)].map((_, i) => (
+        <div
+          key={i}
+          className={`w-1 bg-[#407dd5] rounded-full ${ambientEnabled ? 'animate-pulse' : ''}`}
+          style={{
+            height: ambientEnabled ? `${Math.random() * 28 + 14}px` : '14px',
+            animationDelay: ambientEnabled ? `${i * 0.05}s` : '0s',
+            opacity: ambientEnabled ? 0.3 + Math.random() * 0.7 : 0.2
+          }}
+        />
+      ))}
     </div>
+  </div>
+</div>
 
     {/* Audio Sample */}
-    <div className="px-6 py-6 pt-8 flex flex-col">
-      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Audio Sample</div>
+    <div className="px-6 py-6 pt-8 flex flex-col bg-white/95">
+      <div className="text-[0.85rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Audio Sample</div>
       <button 
         onClick={() => setAmbientEnabled(!ambientEnabled)}
         className={`group relative w-full px-4 py-6 rounded-xl transition-all duration-300 overflow-hidden ${
@@ -1036,17 +1100,17 @@ useEffect(() => {
         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         
         <div className="flex items-center justify-center gap-2.5 relative z-10">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
           </svg>
-          <span className="bebas-neue text-sm tracking-wider">Soundscape</span>
+          <span className="bebas-neue text-base tracking-wider">Soundscape</span>
         </div>
       </button>
     </div>
 
     {/* Right Room Navigation */}
-    <div className="px-6 py-6 pt-8 flex flex-col">
-      <div className="text-[0.7rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Next Room</div>
+    <div className="px-6 py-6 pt-8 flex flex-col bg-white/95">
+      <div className="text-[0.85rem] bebas-neue tracking-[0.2em] text-gray-800 mb-5 uppercase text-center font-medium">Next Room</div>
       <button
         onClick={switchToNextRoom}
         disabled={isTransitioning}
@@ -1056,20 +1120,20 @@ useEffect(() => {
         
         <div className="flex items-center gap-2.5 relative z-10">
           <div className="flex-1 overflow-hidden">
-            <div className="relative h-6">
-              <span className="bebas-neue text-sm tracking-wider absolute left-0 top-0 group-hover:opacity-0 group-hover:-translate-y-full transition-all duration-300">
+            <div className="relative h-7">
+              <span className="bebas-neue text-base tracking-wider absolute left-0 top-0 group-hover:opacity-0 group-hover:-translate-y-full transition-all duration-300">
                 {rooms[(currentRoomIndex + 1) % rooms.length] === 'cinema' 
                   ? 'Cinema Hall' 
                   : rooms[(currentRoomIndex + 1) % rooms.length].charAt(0).toUpperCase() + rooms[(currentRoomIndex + 1) % rooms.length].slice(1)}
               </span>
-              <span className="bebas-neue text-sm tracking-wider absolute left-0 top-full opacity-0 group-hover:opacity-100 group-hover:top-0 transition-all duration-300">
+              <span className="bebas-neue text-base tracking-wider absolute left-0 top-full opacity-0 group-hover:opacity-100 group-hover:top-0 transition-all duration-300">
                 Go To {rooms[(currentRoomIndex + 1) % rooms.length] === 'cinema' 
                   ? 'Cinema' 
                   : rooms[(currentRoomIndex + 1) % rooms.length].charAt(0).toUpperCase() + rooms[(currentRoomIndex + 1) % rooms.length].slice(1)}
               </span>
             </div>
           </div>
-          <svg className="w-5 h-5 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 flex-shrink-0 group-hover:scale-125 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </div>
